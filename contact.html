@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRONTIX - Contact</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo">FRONTIX</div>
+        <nav>
+            <a href="index.html" data-key="home">Home</a>
+            <a href="about.html" data-key="about">About</a>
+            <a href="services.html" data-key="servicesTitle">Services</a>
+            <a href="team.html" data-key="teamTitle">Team</a>
+            <a href="contact.html" data-key="contactTitle">Contact</a>
+            <div class="lang-selector">
+                <button class="lang-btn" onclick="setLang('en')">EN</button>
+                <button class="lang-btn" onclick="setLang('ru')">RU</button>
+                <button class="lang-btn" onclick="setLang('uz')">UZ</button>
+            </div>
+        </nav>
+    </header>
+
+    <section class="contact-section reveal">
+        <h2 data-key="contactTitle">Contact Us</h2>
+        <p data-key="contactDesc">Reach out to us for your project. We'll respond promptly.</p>
+        <form id="contactForm">
+            <input type="text" id="name" placeholder="Your Name" required>
+            <input type="email" id="email" placeholder="Your Email" required>
+            <input type="tel" id="phone" placeholder="Your Phone" required>
+            <textarea id="message" placeholder="Your Message" required></textarea>
+            <button type="submit" data-key="sendBtn">Send Message</button>
+        </form>
+    </section>
+
+    <footer>© 2026 FRONTIX</footer>
+
+<script>
+    const TOKEN = "8579069304:AAGmMAmxBQXj7VHOc0LUi2rFwlnmrxBAHVE"; 
+    const CHAT_IDS = ["7158130495", "1911883008"]; 
+
+    document.getElementById("contactForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const message = document.getElementById("message").value.trim();
+
+        if (!name || !email || !phone || !message) {
+            alert("Iltimos, barcha maydonlarni to'ldiring!");
+            return;
+        }
+
+        const text = `📩 Yangi xabar\n\n👤 Ism: ${name}\n📞 Tel: ${phone}\n✉️ Email: ${email}\n📝 Xabar: ${message}`;
+
+        CHAT_IDS.forEach(chat_id => {
+            fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ chat_id: chat_id, text: text })
+            }).catch(err => console.error("Xatolik:", err));
+        });
+
+        alert("✅ Xabar muvaffaqiyatli yuborildi!");
+        document.getElementById("contactForm").reset();
+    });
+</script>
+
+<script src="./i18n.js"></script>
+</body>
+</html>
